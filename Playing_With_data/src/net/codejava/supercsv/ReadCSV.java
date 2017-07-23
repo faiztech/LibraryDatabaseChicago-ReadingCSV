@@ -16,9 +16,9 @@ public class ReadCSV
 {
     ICsvBeanReader beanReader = null;
 
-    public ReadCSV(String fileN, Map map)
+    public ReadCSV(String fileN, Map map, String[] choices)
     {
-        String filename = fileN;
+
         int i = 0;
 
 
@@ -27,16 +27,17 @@ public class ReadCSV
 
         try
         {
-            beanReader = new CsvBeanReader(new FileReader(filename), CsvPreference.STANDARD_PREFERENCE);
+            beanReader = new CsvBeanReader(new FileReader(fileN), CsvPreference.STANDARD_PREFERENCE);
 
             String[] header = beanReader.getHeader(true);
 
             Library libBean = null;
+            choices[i++] = "--Select a Library--";
 
             while ((libBean = beanReader.read(Library.class, header, processors)) != null)
             {
                 map.put(libBean.getName(), new Library(libBean.getName(), libBean.getHoursOfOp(), libBean.getAddress(), libBean.getZip(), libBean.getPhone(), libBean.getWebsite()));
-
+                choices[i++] = libBean.getName();
             }
 
 
